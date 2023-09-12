@@ -1472,3 +1472,39 @@ venv/Scripts/pip3.11.exe
 venv/Scripts/pip3.exe
 venv/Scripts/python.exe
 venv/Scripts/pythonw.exe
+build/drawing_finder_ui/Analysis-00.toc
+build/drawing_finder_ui/base_library.zip
+build/drawing_finder_ui/drawing_finder_ui.exe.manifest
+build/drawing_finder_ui/drawing_finder_ui.pkg
+build/drawing_finder_ui/EXE-00.toc
+build/drawing_finder_ui/PKG-00.toc
+build/drawing_finder_ui/PYZ-00.pyz
+build/drawing_finder_ui/PYZ-00.toc
+build/drawing_finder_ui/Tree-00.toc
+build/drawing_finder_ui/Tree-01.toc
+build/drawing_finder_ui/Tree-02.toc
+build/drawing_finder_ui/warn-drawing_finder_ui.txt
+build/drawing_finder_ui/xref-drawing_finder_ui.html
+build/drawing_finder_ui/localpycs/pyimod01_archive.pyc
+build/drawing_finder_ui/localpycs/pyimod02_importers.pyc
+build/drawing_finder_ui/localpycs/pyimod03_ctypes.pyc
+build/drawing_finder_ui/localpycs/pyimod04_pywin32.pyc
+build/drawing_finder_ui/localpycs/struct.pyc
+build/Drawing Opener/Analysis-00.toc
+build/Drawing Opener/base_library.zip
+build/Drawing Opener/Drawing Opener.exe.manifest
+build/Drawing Opener/Drawing Opener.pkg
+build/Drawing Opener/EXE-00.toc
+build/Drawing Opener/PKG-00.toc
+build/Drawing Opener/PYZ-00.pyz
+build/Drawing Opener/PYZ-00.toc
+build/Drawing Opener/Tree-00.toc
+build/Drawing Opener/Tree-01.toc
+build/Drawing Opener/Tree-02.toc
+build/Drawing Opener/warn-Drawing Opener.txt
+build/Drawing Opener/xref-Drawing Opener.html
+build/Drawing Opener/localpycs/pyimod01_archive.pyc
+build/Drawing Opener/localpycs/pyimod02_importers.pyc
+build/Drawing Opener/localpycs/pyimod03_ctypes.pyc
+build/Drawing Opener/localpycs/pyimod04_pywin32.pyc
+build/Drawing Opener/localpycs/struct.pyc
