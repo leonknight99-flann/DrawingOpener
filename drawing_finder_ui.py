@@ -10,6 +10,19 @@ def resource_path(relative_path):
     base_path = getattr(sys, '_MEIPASS', os.path.dirname(os.path.abspath(__file__)))
     return os.path.join(base_path, relative_path)
 
+
+class WaveguideCalculatorApplication(tk.Toplevel):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs) 
+        self.title("Waveguide Calculator")
+        self.geometry("450x120")
+        self.resizable(False, False)
+        self.iconbitmap(resource_path('images\\FlannMicrowave.ico'))
+        
+        self.label = tk.Label(text="Coming Soon!")
+        self.label.pack()
+        
+
 class MainApplication(tk.Tk):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs) 
@@ -32,9 +45,17 @@ class MainApplication(tk.Tk):
         self.menuBar.add_cascade(label="History", menu=self.historyMenu)
         for name in self.drawingNumberHistory:
             self.historyMenu.add_command(label=name, command=None)
+
+        self.rfMenu = tk.Menu(self.menuBar, tearoff=False)
+        self.menuBar.add_cascade(label='RF Tools', menu=self.rfMenu)
+        self.rfMenu.add_command(label='Waveguide calculator', command=lambda: self.open_waveguide_calculator())
+        self.rfMenu.add_command(label='VSWR calculator', command=lambda: self.coming_soon())
         
+        self.transparencyBool = tk.IntVar()
+
         self.helpMenu = tk.Menu(self.menuBar, tearoff=False)
         self.menuBar.add_cascade(label="Help", menu=self.helpMenu)
+        self.helpMenu.add_checkbutton(label='Transparency', variable=self.transparencyBool, onvalue=1, offvalue=0, command=lambda: self.transparency_menu())
         self.helpMenu.add_command(label='Help', command=lambda: self.help_menu())
         self.helpMenu.add_command(label='About', command=lambda: self.about_menu())
 
@@ -76,6 +97,13 @@ class MainApplication(tk.Tk):
     def clear_message_box(self):
         self.messageBox.delete('1.0', tk.END)
 
+    def transparency_menu(self):
+        if self.transparencyBool.get():
+            self.attributes("-alpha", 0.6)
+
+        if not self.transparencyBool.get():
+            self.attributes("-alpha", 1)
+
     def help_menu(self):
         mb.showinfo('Help', "Insert the number of the drawing without any prefix 0s.\nFor example 00047421 enter as 47421\n\n"
                     "This will then try to open the .idw file, failing that a .dwg file, and failing that the file explorer folder\n\n"
@@ -84,7 +112,14 @@ class MainApplication(tk.Tk):
                     "Please report any bugs and suggest any ideas to Leon")
 
     def about_menu(self):
-        mb.showinfo('About', "Leon's drawing opener\nVersion: 1.1.4")
+        mb.showinfo('About', "Leon's drawing opener\nVersion: 1.2.0")
+
+    def coming_soon(self):
+        mb.showinfo('Message','Feature coming soon!')
+
+    def open_waveguide_calculator(self):
+        self.waveguide_calculator = WaveguideCalculatorApplication()
+        self.waveguide_calculator.mainloop()
 
     def open_drawing(self, drawingNumber):
         while True:
