@@ -18,7 +18,7 @@ class MainApplication(tk.Tk):
         self.title("Drawing Opener")
         self.geometry("450x180")
         self.resizable(False, False)
-        self.iconbitmap(resource_path('images\\FlannMicrowave.ico'))
+        self.iconbitmap(resource_path('FlannMicrowave.ico'))
 
         self.drawingNumber = tk.StringVar()
         self.drawingNumberHistory = ['empty']*5
@@ -205,16 +205,16 @@ class MainApplication(tk.Tk):
             break
             
 
-class WaveguideCalculatorPage(tk.Toplevel):
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs) 
-        self.title("Waveguide Calculator")
-        self.geometry("450x120")
-        self.resizable(False, False)
-        self.iconbitmap(resource_path('images\\FlannMicrowave.ico'))
+# class WaveguideCalculatorPage(tk.Toplevel):
+#     def __init__(self, *args, **kwargs):
+#         super().__init__(*args, **kwargs) 
+#         self.title("Waveguide Calculator")
+#         self.geometry("450x120")
+#         self.resizable(False, False)
+#         self.iconbitmap(resource_path('images\\FlannMicrowave.ico'))
         
-        self.label = tk.Label(text="Coming Soon!")
-        self.label.grid(row=0, column=0)
+#         self.label = tk.Label(text="Coming Soon!")
+#         self.label.grid(row=0, column=0)
       
 
 if __name__ == '__main__':
