@@ -125,7 +125,7 @@ class MainApplication(tk.Tk):
                     "Please report any bugs and suggest any ideas to Leon")
 
     def about_menu(self):
-        mb.showinfo('About', "Leon's drawing opener\nVersion: 1.2.0")
+        mb.showinfo('About', "Leon's drawing opener\nVersion: 1.2.1")
 
     def coming_soon(self):
         mb.showinfo('Message','Feature coming soon')
@@ -134,15 +134,15 @@ class MainApplication(tk.Tk):
         waveguide_calculator = WaveguideCalculatorPage()
         waveguide_calculator.grab_set()
 
-    def filter_file_names(self, fileList):
+    def filter_file_names(self, fileList, letterType):
         filteredList = []
         filteredList = filteredList + list(filter(lambda d: '.idw' in d, fileList))
         filteredList = filteredList + list(filter(lambda d: '.dwg' in d, fileList))
         filteredList = filteredList + list(filter(lambda d: '.tif' in d, fileList))
         filteredList = filteredList + list(filter(lambda d: '.png' in d, fileList))
         if not filteredList:
-            mb.showerror('Error', 'No drawing of letter type found.\nSee message window.')
-            return []
+            mb.showerror('Error', f'No drawing of letter {letterType} found.')
+            return
         return filteredList[0]
 
 
@@ -164,18 +164,23 @@ class MainApplication(tk.Tk):
             dirList = os.listdir(drawingPath + A + B)
 
             drawingFiles = list(filter(lambda d: drawingNumber in d, dirList))
-            self.messageBox.insert(tk.END, f'\n{drawingFiles}')
+            self.messageBox.insert(tk.END, f'{drawingFiles}')
             self.messageBox.see(tk.END)
             drawingFileList = []
             if self.openDrawingABool.get():
                 drawingFileA = list(filter(lambda d: '_A' in d, drawingFiles))
-                drawingFileList.append(self.filter_file_names(drawingFileA))
+                drawingFileList.append(self.filter_file_names(drawingFileA, 'A'))
             if self.openDrawingCBool.get():
                 drawingFileC = list(filter(lambda d: '_C' in d, drawingFiles))
-                drawingFileList.append(self.filter_file_names(drawingFileC))
+                drawingFileList.append(self.filter_file_names(drawingFileC, 'C'))
             if self.openDrawingRBool.get():
                 drawingFileR = list(filter(lambda d: '_R' in d, drawingFiles))
-                drawingFileList.append(self.filter_file_names(drawingFileR))
+                drawingFileList.append(self.filter_file_names(drawingFileR, 'R'))
+
+            if drawingFileList == [None]:
+                self.messageBox.insert(tk.END, f'\nNo A C R drawings: {drawingFiles[0]}')
+                os.startfile(drawingPath + A + B + drawingFiles[0])
+                break
 
             for i in drawingFileList:    
                 try:
