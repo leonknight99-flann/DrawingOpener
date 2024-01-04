@@ -130,9 +130,9 @@ class MainApplication(tk.Tk):
     def coming_soon(self):
         mb.showinfo('Message','Feature coming soon')
 
-    def open_waveguide_calculator(self):
-        waveguide_calculator = WaveguideCalculatorPage()
-        waveguide_calculator.grab_set()
+    # def open_waveguide_calculator(self):
+    #     waveguide_calculator = WaveguideCalculatorPage()
+    #     waveguide_calculator.grab_set()
 
     def filter_file_names(self, fileList, letterType):
         filteredList = []
