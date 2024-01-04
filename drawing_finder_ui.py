@@ -119,9 +119,11 @@ class MainApplication(tk.Tk):
 
     def help_menu(self):
         mb.showinfo('Help', "Insert the number of the drawing without any prefix 0s.\nFor example 00047421 enter as 47421\n\n"
-                    "This will then try to open the .idw file, failing that a .dwg file, and failing that the file explorer folder\n\n"
+                    "This will then try to open the .idw file, failing that a .dwg file, then .tif and finally .png\n\n"
+                    "If a specific drawing is required such as C or R then use the checkboxes\n\n"
                     "The 'Close All' button closes all .idw and .dwg files instantly by the windows task kill process - to help clear up the desktop if lots of drawings have been opened\n\n"
-                    "The 'Open Folder' checkbox will open the folder that the drawing is located in as well as the drawing\n\n"
+                    "The 'Open Folder' checkbox will open the folder that the drawing is located\n\n"
+                    "Customer enquiry folder opens via the open button after the exact 9 digit number has been entered\n\n"
                     "Please report any bugs and suggest any ideas to Leon")
 
     def about_menu(self):
