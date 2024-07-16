@@ -1508,6 +1508,7 @@ build/Drawing Opener/localpycs/pyimod02_importers.pyc
 build/Drawing Opener/localpycs/pyimod03_ctypes.pyc
 build/Drawing Opener/localpycs/pyimod04_pywin32.pyc
 build/Drawing Opener/localpycs/struct.pyc
+envDrawing/
 envDrawing/pyvenv.cfg
 envDrawing/Lib/site-packages/pip/__init__.py
 envDrawing/Lib/site-packages/pip/__main__.py
@@ -2390,3 +2391,12 @@ envDrawing/Scripts/pip3.exe
 envDrawing/Scripts/python.exe
 envDrawing/Scripts/pythonw.exe
 test.py
+envDrawing/Lib/site-packages/pyodbc.cp312-win_amd64.pyd
+envDrawing/Lib/site-packages/pyodbc.pyi
+envDrawing/Lib/site-packages/pyodbc-5.1.0.dist-info/INSTALLER
+envDrawing/Lib/site-packages/pyodbc-5.1.0.dist-info/LICENSE.txt
+envDrawing/Lib/site-packages/pyodbc-5.1.0.dist-info/METADATA
+envDrawing/Lib/site-packages/pyodbc-5.1.0.dist-info/RECORD
+envDrawing/Lib/site-packages/pyodbc-5.1.0.dist-info/REQUESTED
+envDrawing/Lib/site-packages/pyodbc-5.1.0.dist-info/top_level.txt
+envDrawing/Lib/site-packages/pyodbc-5.1.0.dist-info/WHEEL
