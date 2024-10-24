@@ -79,16 +79,6 @@ class MainApplication(tk.Tk):
                                                                         self.clear_message_box()])
         self.closeButtonDrawing.grid(row=0,column=8, padx=0, pady=5)
 
-        self.introTextEnquiries = tk.Label(self, text="Enter enquiry number:")
-        self.introTextEnquiries.grid(row=2, column=0, columnspan=1, padx=0, pady=0)
-
-        self.expressionFieldEnquiries = tk.Entry(self, textvariable=self.enquiryNumber)
-        self.expressionFieldEnquiries.grid(row=2, column=1, columnspan=6, padx=0, pady=0)
-
-        self.openButtonEnquries = tk.Button(self, text='Open', command=lambda: [self.open_enquiry(self.enquiryNumber.get()), 
-                                                                  self.clear_text_entry()])
-        self.openButtonEnquries.grid(row=2,column=7, padx=0, pady=0)
-
         self.openDrawingABool = tk.IntVar(value=True)
         self.openDrawingCBool = tk.IntVar()
         self.openDrawingRBool = tk.IntVar()
@@ -102,6 +92,16 @@ class MainApplication(tk.Tk):
         self.openDrawingCCheckbox.grid(row=1,column=2, columnspan=1, padx=0, pady=5)
         self.openDrawingRCheckbox = tk.Checkbutton(self, text="R", variable=self.openDrawingRBool, onvalue=1, offvalue=0)
         self.openDrawingRCheckbox.grid(row=1,column=3, columnspan=1, padx=0, pady=5)
+
+        self.introTextEnquiries = tk.Label(self, text="Enter enquiry number:")
+        self.introTextEnquiries.grid(row=2, column=0, columnspan=1, padx=0, pady=0)
+
+        self.expressionFieldEnquiries = tk.Entry(self, textvariable=self.enquiryNumber)
+        self.expressionFieldEnquiries.grid(row=2, column=1, columnspan=6, padx=0, pady=0)
+
+        self.openButtonEnquries = tk.Button(self, text='Open', command=lambda: [self.open_enquiry(self.enquiryNumber.get()), 
+                                                                  self.clear_text_entry()])
+        self.openButtonEnquries.grid(row=2,column=7, padx=0, pady=0)
 
         self.messageBox = tk.Text(self, height=2, width=50)
         self.messageBoxScrollBar = tk.Scrollbar(self, command=self.messageBox.yview, orient="vertical")
