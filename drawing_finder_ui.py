@@ -5,9 +5,13 @@ import os
 import sys
 import subprocess
 import math
+import pyodbc
 
 drawingPath = '\\\\Filesrv\\Drawings\\PROD\\'
 enquiryPath = '\\\\Filesrv\\CustomerEnquiries\\'
+
+mydb = pyodbc.connect("DRIVER={SQL Server};SERVER=SQLSRV22;DATABASE=EngAdmin;UID=FLUser;PWD=MelonBall", readonly=True)
+mydb_cursor = mydb.cursor()
 
 def resource_path(relative_path):
     base_path = getattr(sys, '_MEIPASS', os.path.dirname(os.path.abspath(__file__)))
@@ -81,6 +85,10 @@ class MainApplication(tk.Tk):
         self.openFolderBool = tk.IntVar()
         self.openFolderCheckbox = tk.Checkbutton(self, text='Open Folder', variable=self.openFolderBool, onvalue=1, offvalue=0)
         self.openFolderCheckbox.grid(row=2,column=8, columnspan=2, padx=0, pady=5)
+
+        self.dcnCheckBool = tk.IntVar(value=True)
+        self.dcnCheckbox = tk.Checkbutton(self, text='DCN Check', variable=self.dcnCheckBool, onvalue=1, offvalue=0)
+        self.dcnCheckbox.grid(row=2, column=6, columnspan=2, padx=0, pady=5)
 
         self.openDrawingABool = tk.IntVar(value=True)
         self.openDrawingCBool = tk.IntVar()
@@ -166,6 +174,11 @@ class MainApplication(tk.Tk):
                 mb.showerror('Error', 'Invalid number entered')
                 break
             
+            print(self.dcn_check(drawingNumber))
+            print(self.dcnCheckBool.get())
+            if self.dcn_check(drawingNumber) and self.dcnCheckBool.get():
+                mb.showerror('DCN', 'DCN(s) found')
+            
             if not len(drawingNumber) == 8:
                 drawingNumber = (8-len(drawingNumber))*'0' + drawingNumber 
 
@@ -209,12 +222,22 @@ class MainApplication(tk.Tk):
             self.messageBox.insert(tk.END, '\n\n')
             break
 
+    def dcn_check(self, DC_Code):
+        for row in mydb_cursor.execute("select * from DCNTab where DC_CODE like ?", '%'+DC_Code+'%'):
+            try:
+                if row.CHANGE_NOTE_NO:
+                    return True
+            except Exception:
+                self.messageBox.insert(tk.END, f'\nError in checking for DCN')
+            return False
+
+
     def open_enquiry(self, enquiryNumber):
         while True:
             if not enquiryNumber.isdigit() or len(enquiryNumber) != 9:
                 mb.showerror('Error', 'Invalid number entered')
                 break
-            self.messageBox.insert(tk.END, f'Opening enquiry: {enquiryNumber}')
+            self.messageBox.insert(tk.END, f'\nOpening enquiry: {enquiryNumber}')
             try:
                 os.startfile(enquiryPath + enquiryNumber)
             except Exception:
