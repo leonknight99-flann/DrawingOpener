@@ -1,3 +1,4 @@
+.gitignore
 build/drawing_finder_ui/Analysis-00.toc
 build/drawing_finder_ui/base_library.zip
 build/drawing_finder_ui/drawing_finder_ui.exe.manifest
