@@ -90,7 +90,7 @@ class MainApplication(tk.Tk):
                                                                         self.clear_message_box()])
         self.closeButtonDrawing.grid(row=0,column=8, padx=0, pady=(5,0))
 
-        self.introInspection = tk.Label(self, text="Open Inspection PartID:")
+        self.introInspection = tk.Label(self, text="Enter inspection partID:")
         self.introInspection.grid(row=1,column=0, padx=10)
 
         self.expressionFieldInspection = tk.Entry(self, state='disabled')
