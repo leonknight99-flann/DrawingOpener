@@ -65,19 +65,19 @@ class MainApplication(tk.Tk):
         self.helpMenu.add_command(label='About', command=lambda: self.about_menu())
 
         self.introTextDrawing = tk.Label(self, text="Enter drawing number:")
-        self.introTextDrawing.grid(row=0, column=0, columnspan=1, padx=10, pady=5)
+        self.introTextDrawing.grid(row=0, column=0, columnspan=1, padx=10, pady=(5,0))
 
         self.expressionFieldDrawing = tk.Entry(self, textvariable=self.drawingNumber)
-        self.expressionFieldDrawing.grid(row=0, column=1, columnspan=6, padx=0, pady=5)
+        self.expressionFieldDrawing.grid(row=0, column=1, columnspan=6, padx=0, pady=(5,0))
 
         self.openButtonDrawing = tk.Button(self, text='Open', command=lambda: [self.open_drawing(self.drawingNumber.get()), 
                                                                   self.clear_text_entry()])
-        self.openButtonDrawing.grid(row=0,column=7, padx=0, pady=5)
+        self.openButtonDrawing.grid(row=0,column=7, padx=0, pady=(5,0))
 
         self.closeButtonDrawing = tk.Button(self, text='Close All', command=lambda: [subprocess.call('taskkill /f /im InventorView.exe', creationflags=subprocess.CREATE_NO_WINDOW), 
                                                                         subprocess.call('taskkill /f /im dwgviewr.exe', creationflags=subprocess.CREATE_NO_WINDOW), 
                                                                         self.clear_message_box()])
-        self.closeButtonDrawing.grid(row=0,column=8, padx=0, pady=5)
+        self.closeButtonDrawing.grid(row=0,column=8, padx=0, pady=(5,0))
 
         self.openDrawingABool = tk.IntVar(value=True)
         self.openDrawingCBool = tk.IntVar()
