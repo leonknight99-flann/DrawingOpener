@@ -22,7 +22,7 @@ class MainApplication(tk.Tk):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs) 
         self.title("Drawing Opener")
-        self.geometry("450x180")
+        self.geometry("450x165")
         self.resizable(False, False)
         self.iconbitmap(resource_path('FlannMicrowave.ico'))
 
@@ -35,6 +35,10 @@ class MainApplication(tk.Tk):
         self.transparencyBool = tk.IntVar()
         self.openFolderBool = tk.IntVar()
         self.dcnCheckBool = tk.IntVar(value=True)
+
+        self.openDrawingABool = tk.IntVar(value=True)
+        self.openDrawingCBool = tk.IntVar()
+        self.openDrawingRBool = tk.IntVar()
         
         self.menuBar = tk.Menu(self)
         self.config(menu=self.menuBar)
@@ -42,11 +46,18 @@ class MainApplication(tk.Tk):
         self.fileMenu = tk.Menu(self.menuBar, tearoff=False)
         self.menuBar.add_cascade(label='File', menu=self.fileMenu)
 
+        self.drawingTypeMenu = tk.Menu(self.fileMenu, tearoff=False)
+        self.fileMenu.add_cascade(label='Drawing Type', menu=self.drawingTypeMenu)
+        self.drawingTypeMenu.add_checkbutton(label="A", variable=self.openDrawingABool, onvalue=1, offvalue=0)
+        self.drawingTypeMenu.add_checkbutton(label="C", variable=self.openDrawingCBool, onvalue=1, offvalue=0)
+        self.drawingTypeMenu.add_checkbutton(label="R", variable=self.openDrawingRBool, onvalue=1, offvalue=0)
+
         self.optionMenu = tk.Menu(self.fileMenu, tearoff=False)
         self.fileMenu.add_cascade(label='Options', menu=self.optionMenu)
         self.optionMenu.add_checkbutton(label='Transparency', variable=self.transparencyBool, onvalue=1, offvalue=0, command=lambda: self.transparency_menu())
         self.optionMenu.add_checkbutton(label='Open Folder', variable=self.openFolderBool, onvalue=1, offvalue=0)
         self.optionMenu.add_checkbutton(label='DCN Check', variable=self.dcnCheckBool, onvalue=1, offvalue=0)
+
         self.fileMenu.add_command(label='Exit', command=self.exit_program)
         
         self.historyMenu = tk.Menu(self.menuBar, tearoff=False)
@@ -79,19 +90,14 @@ class MainApplication(tk.Tk):
                                                                         self.clear_message_box()])
         self.closeButtonDrawing.grid(row=0,column=8, padx=0, pady=(5,0))
 
-        self.openDrawingABool = tk.IntVar(value=True)
-        self.openDrawingCBool = tk.IntVar()
-        self.openDrawingRBool = tk.IntVar()
+        self.introInspection = tk.Label(self, text="Open Inspection PartID:")
+        self.introInspection.grid(row=1,column=0, padx=10)
 
-        self.openDrawingTypeText = tk.Label(self, text="Open Drawing Type:")
-        self.openDrawingTypeText.grid(row=1,column=0, padx=10)
+        self.expressionFieldInspection = tk.Entry(self, state='disabled')
+        self.expressionFieldInspection.grid(row=1, column=1, columnspan=6, padx=0, pady=0)
 
-        self.openDrawingACheckbox = tk.Checkbutton(self, text="A", variable=self.openDrawingABool, onvalue=1, offvalue=0)
-        self.openDrawingACheckbox.grid(row=1,column=1, columnspan=1, padx=0, pady=5)
-        self.openDrawingCCheckbox = tk.Checkbutton(self, text="C", variable=self.openDrawingCBool, onvalue=1, offvalue=0)
-        self.openDrawingCCheckbox.grid(row=1,column=2, columnspan=1, padx=0, pady=5)
-        self.openDrawingRCheckbox = tk.Checkbutton(self, text="R", variable=self.openDrawingRBool, onvalue=1, offvalue=0)
-        self.openDrawingRCheckbox.grid(row=1,column=3, columnspan=1, padx=0, pady=5)
+        self.openButtonInspection = tk.Button(self, text='Open', command=lambda: [self.coming_soon()])
+        self.openButtonInspection.grid(row=1,column=7, padx=0, pady=0)
 
         self.introTextEnquiries = tk.Label(self, text="Enter enquiry number:")
         self.introTextEnquiries.grid(row=2, column=0, columnspan=1, padx=0, pady=0)
@@ -138,7 +144,7 @@ class MainApplication(tk.Tk):
                     "Please report any bugs and suggest any ideas to Leon")
 
     def about_menu(self):
-        mb.showinfo('About', "Leon's drawing opener\nVersion: 1.3.1")
+        mb.showinfo('About', "Leon's drawing opener\nVersion: 1.3.2")
 
     def coming_soon(self):
         mb.showinfo('Message','Feature coming soon')
