@@ -83,12 +83,12 @@ class MainApplication(tk.Tk):
 
         self.openButtonDrawing = tk.Button(self, text='Open', command=lambda: [self.open_drawing(self.drawingNumber.get()), 
                                                                   self.clear_text_entry()])
-        self.openButtonDrawing.grid(row=0,column=7, padx=0, pady=(5,0))
+        self.openButtonDrawing.grid(row=0,column=8, padx=0, pady=(5,0))
 
         self.closeButtonDrawing = tk.Button(self, text='Close All', command=lambda: [subprocess.call('taskkill /f /im InventorView.exe', creationflags=subprocess.CREATE_NO_WINDOW), 
                                                                         subprocess.call('taskkill /f /im dwgviewr.exe', creationflags=subprocess.CREATE_NO_WINDOW), 
                                                                         self.clear_message_box()])
-        self.closeButtonDrawing.grid(row=0,column=8, padx=0, pady=(5,0))
+        self.closeButtonDrawing.grid(row=0,column=9,columnspan=2, padx=0, pady=(5,0))
 
         self.introInspection = tk.Label(self, text="Enter inspection partID:")
         self.introInspection.grid(row=1,column=0, padx=10)
@@ -97,7 +97,7 @@ class MainApplication(tk.Tk):
         self.expressionFieldInspection.grid(row=1, column=1, columnspan=6, padx=0, pady=0)
 
         self.openButtonInspection = tk.Button(self, text='Open', command=lambda: [self.coming_soon()])
-        self.openButtonInspection.grid(row=1,column=7, padx=0, pady=0)
+        self.openButtonInspection.grid(row=1,column=8, padx=0, pady=0)
 
         self.introTextEnquiries = tk.Label(self, text="Enter enquiry number:")
         self.introTextEnquiries.grid(row=2, column=0, columnspan=1, padx=0, pady=0)
@@ -107,7 +107,7 @@ class MainApplication(tk.Tk):
 
         self.openButtonEnquries = tk.Button(self, text='Open', command=lambda: [self.open_enquiry(self.enquiryNumber.get()), 
                                                                   self.clear_text_entry()])
-        self.openButtonEnquries.grid(row=2,column=7, padx=0, pady=0)
+        self.openButtonEnquries.grid(row=2,column=8, padx=0, pady=0)
 
         self.messageBox = tk.Text(self, height=2, width=50)
         self.messageBoxScrollBar = tk.Scrollbar(self, command=self.messageBox.yview, orient="vertical")
