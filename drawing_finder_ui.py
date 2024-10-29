@@ -22,7 +22,7 @@ class MainApplication(tk.Tk):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs) 
         self.title("Drawing Opener")
-        self.geometry("450x165")
+        self.geometry("430x170")
         self.resizable(False, False)
         self.iconbitmap(resource_path('FlannMicrowave.ico'))
 
@@ -76,10 +76,10 @@ class MainApplication(tk.Tk):
         self.helpMenu.add_command(label='About', command=lambda: self.about_menu())
 
         self.introTextDrawing = tk.Label(self, text="Enter drawing number:")
-        self.introTextDrawing.grid(row=0, column=0, columnspan=1, padx=10, pady=(5,0))
+        self.introTextDrawing.grid(row=0, column=0, columnspan=1, padx=(5,0), pady=(5,0))
 
         self.expressionFieldDrawing = tk.Entry(self, textvariable=self.drawingNumber)
-        self.expressionFieldDrawing.grid(row=0, column=1, columnspan=6, padx=0, pady=(5,0))
+        self.expressionFieldDrawing.grid(row=0, column=1, columnspan=7, padx=0, pady=(5,0))
 
         self.openButtonDrawing = tk.Button(self, text='Open', command=lambda: [self.open_drawing(self.drawingNumber.get()), 
                                                                   self.clear_text_entry()])
@@ -91,29 +91,29 @@ class MainApplication(tk.Tk):
         self.closeButtonDrawing.grid(row=0,column=9,columnspan=2, padx=0, pady=(5,0))
 
         self.introInspection = tk.Label(self, text="Enter inspection partID:")
-        self.introInspection.grid(row=1,column=0, padx=10)
+        self.introInspection.grid(row=1,column=0, padx=(5,0), pady=(5,0))
 
         self.expressionFieldInspection = tk.Entry(self, state='disabled')
-        self.expressionFieldInspection.grid(row=1, column=1, columnspan=6, padx=0, pady=0)
+        self.expressionFieldInspection.grid(row=1, column=1, columnspan=7, padx=0, pady=(5,0))
 
         self.openButtonInspection = tk.Button(self, text='Open', command=lambda: [self.coming_soon()])
-        self.openButtonInspection.grid(row=1,column=8, padx=0, pady=0)
+        self.openButtonInspection.grid(row=1,column=8, padx=0, pady=(5,0))
 
         self.introTextEnquiries = tk.Label(self, text="Enter enquiry number:")
-        self.introTextEnquiries.grid(row=2, column=0, columnspan=1, padx=0, pady=0)
+        self.introTextEnquiries.grid(row=2, column=0, columnspan=1, padx=(5,0), pady=(5,0))
 
         self.expressionFieldEnquiries = tk.Entry(self, textvariable=self.enquiryNumber)
-        self.expressionFieldEnquiries.grid(row=2, column=1, columnspan=6, padx=0, pady=0)
+        self.expressionFieldEnquiries.grid(row=2, column=1, columnspan=7, padx=0, pady=(5,0))
 
         self.openButtonEnquries = tk.Button(self, text='Open', command=lambda: [self.open_enquiry(self.enquiryNumber.get()), 
                                                                   self.clear_text_entry()])
-        self.openButtonEnquries.grid(row=2,column=8, padx=0, pady=0)
+        self.openButtonEnquries.grid(row=2,column=8, padx=0, pady=(5,0))
 
         self.messageBox = tk.Text(self, height=2, width=50)
         self.messageBoxScrollBar = tk.Scrollbar(self, command=self.messageBox.yview, orient="vertical")
         self.messageBox.configure(yscrollcommand=self.messageBoxScrollBar.set)
-        self.messageBox.grid(row=3, column=0, columnspan=10, padx=10, pady=0)
-        self.messageBoxScrollBar.grid(row=3, column=11, sticky='ns')
+        self.messageBox.grid(row=3, column=0, columnspan=10, padx=(5,0), pady=(5,5))
+        self.messageBoxScrollBar.grid(row=3, column=11, sticky='ns', padx=(0,5))
 
         self.bind('<Return>', lambda event=None: self.openButtonDrawing.invoke())
 
