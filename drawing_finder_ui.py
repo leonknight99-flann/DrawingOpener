@@ -10,12 +10,42 @@ import pyodbc
 drawingPath = '\\\\Filesrv\\Drawings\\PROD\\'
 enquiryPath = '\\\\Filesrv\\CustomerEnquiries\\'
 
-mydb = pyodbc.connect("DRIVER={SQL Server};SERVER=SQLSRV22;DATABASE=EngAdmin;UID=FLUser;PWD=MelonBall", readonly=True)
-mydb_cursor = mydb.cursor()
+DOdb = pyodbc.connect("DRIVER={SQL Server};SERVER=SQLSRV22;DATABASE=EngAdmin;UID=FLUser;PWD=MelonBall", readonly=True)
+DOdb_cursor = DOdb.cursor()
+
+SMARTVISIONdb = pyodbc.connect("DRIVER={SQL Server};SERVER=SQLSRV22;DATABASE=SVFLANN;UID=SVUpdater;PWD=MelonBall", readonly=True)
+SMARTVISIONdb_cursor = SMARTVISIONdb.cursor()
 
 def resource_path(relative_path):
     base_path = getattr(sys, '_MEIPASS', os.path.dirname(os.path.abspath(__file__)))
     return os.path.join(base_path, relative_path)
+
+
+class EntryWithPlaceholder(tk.Entry):
+    def __init__(self, container, placeholder="PLACEHOLDER", color='grey', *args, **kwargs):
+        super().__init__(container, *args, **kwargs)
+
+        self.placeholder = placeholder
+        self.placeholder_color = color
+        self.default_fg_color = self['fg']
+
+        self.bind("<FocusIn>", self.foc_in)
+        self.bind("<FocusOut>", self.foc_out)
+
+        self.put_placeholder()
+
+    def put_placeholder(self):
+        self.insert(0, self.placeholder)
+        self['fg'] = self.placeholder_color
+
+    def foc_in(self, *args):
+        if self['fg'] == self.placeholder_color:
+            self.delete('0', 'end')
+            self['fg'] = self.default_fg_color
+
+    def foc_out(self, *args):
+        if not self.get():
+            self.put_placeholder()
 
 
 class MainApplication(tk.Tk):
@@ -67,47 +97,47 @@ class MainApplication(tk.Tk):
 
         self.rfMenu = tk.Menu(self.menuBar, tearoff=False)
         self.menuBar.add_cascade(label='RF Tools', menu=self.rfMenu)
-        self.rfMenu.add_command(label='Waveguide calculator', command=lambda: self.open_waveguide_calculator())
-        self.rfMenu.add_command(label='VSWR calculator', command=lambda: self.open_vswr_calculator())
+        self.rfMenu.add_command(label='Waveguide Calculator', command=lambda: self.open_waveguide_calculator())
+        self.rfMenu.add_command(label='VSWR Converter', command=lambda: self.open_vswr_calculator())
 
         self.helpMenu = tk.Menu(self.menuBar, tearoff=False)
         self.menuBar.add_cascade(label="Help", menu=self.helpMenu)
         self.helpMenu.add_command(label='Help', command=lambda: self.help_menu())
         self.helpMenu.add_command(label='About', command=lambda: self.about_menu())
 
-        self.introTextDrawing = tk.Label(self, text="Enter drawing number:")
+        self.introTextDrawing = tk.Label(self, text="Drawing Opener:")
         self.introTextDrawing.grid(row=0, column=0, columnspan=1, padx=(5,0), pady=(5,0))
 
-        self.expressionFieldDrawing = tk.Entry(self, textvariable=self.drawingNumber)
+        self.expressionFieldDrawing = EntryWithPlaceholder(self, width=29, justify='center', textvariable=self.drawingNumber, placeholder='Drawing Number or Part ID')
         self.expressionFieldDrawing.grid(row=0, column=1, columnspan=7, padx=0, pady=(5,0))
 
         self.openButtonDrawing = tk.Button(self, text='Open', command=lambda: [self.open_drawing(self.drawingNumber.get()), 
                                                                   self.clear_text_entry()])
-        self.openButtonDrawing.grid(row=0,column=8, padx=0, pady=(5,0))
+        self.openButtonDrawing.grid(row=0,column=8, padx=(5,0), pady=(5,0))
 
         self.closeButtonDrawing = tk.Button(self, text='Close All', command=lambda: [subprocess.call('taskkill /f /im InventorView.exe', creationflags=subprocess.CREATE_NO_WINDOW), 
                                                                         subprocess.call('taskkill /f /im dwgviewr.exe', creationflags=subprocess.CREATE_NO_WINDOW), 
                                                                         self.clear_message_box()])
         self.closeButtonDrawing.grid(row=0,column=9,columnspan=2, padx=0, pady=(5,0))
 
-        self.introInspection = tk.Label(self, text="Enter inspection partID:")
+        self.introInspection = tk.Label(self, text="CMM Folder Opener:")
         self.introInspection.grid(row=1,column=0, padx=(5,0), pady=(5,0))
 
-        self.expressionFieldInspection = tk.Entry(self, state='disabled')
+        self.expressionFieldInspection = EntryWithPlaceholder(self, width=29, state='disabled', justify='center', placeholder='Inspection part id')
         self.expressionFieldInspection.grid(row=1, column=1, columnspan=7, padx=0, pady=(5,0))
 
         self.openButtonInspection = tk.Button(self, text='Open', command=lambda: [self.coming_soon()])
-        self.openButtonInspection.grid(row=1,column=8, padx=0, pady=(5,0))
+        self.openButtonInspection.grid(row=1,column=8, padx=(5,0), pady=(5,0))
 
-        self.introTextEnquiries = tk.Label(self, text="Enter enquiry number:")
+        self.introTextEnquiries = tk.Label(self, text="Enquiry Folder Opener:")
         self.introTextEnquiries.grid(row=2, column=0, columnspan=1, padx=(5,0), pady=(5,0))
 
-        self.expressionFieldEnquiries = tk.Entry(self, textvariable=self.enquiryNumber)
+        self.expressionFieldEnquiries = EntryWithPlaceholder(self, width=29, justify='center', textvariable=self.enquiryNumber, placeholder='Enquiry Number')
         self.expressionFieldEnquiries.grid(row=2, column=1, columnspan=7, padx=0, pady=(5,0))
 
         self.openButtonEnquries = tk.Button(self, text='Open', command=lambda: [self.open_enquiry(self.enquiryNumber.get()), 
                                                                   self.clear_text_entry()])
-        self.openButtonEnquries.grid(row=2,column=8, padx=0, pady=(5,0))
+        self.openButtonEnquries.grid(row=2,column=8, padx=(5,0), pady=(5,0))
 
         self.messageBox = tk.Text(self, height=2, width=50)
         self.messageBoxScrollBar = tk.Scrollbar(self, command=self.messageBox.yview, orient="vertical")
@@ -115,7 +145,14 @@ class MainApplication(tk.Tk):
         self.messageBox.grid(row=3, column=0, columnspan=10, padx=(5,0), pady=(5,5))
         self.messageBoxScrollBar.grid(row=3, column=11, sticky='ns', padx=(0,5))
 
+        self.expressionFieldDrawing.bind('<FocusIn>', self.return_bind_open_drawing())
+        self.expressionFieldEnquiries.bind('<FocusIn>', self.return_bind_open_enquiry())
+
+    def return_bind_open_drawing(self):
         self.bind('<Return>', lambda event=None: self.openButtonDrawing.invoke())
+    
+    def return_bind_open_enquiry(self):
+        self.bind('<Return>', lambda event=None: self.openButtonEnquries.invoke())
 
     def exit_program(self):
         sys.exit()
@@ -135,16 +172,18 @@ class MainApplication(tk.Tk):
             self.attributes("-alpha", 1)
 
     def help_menu(self):
-        mb.showinfo('Help', " - Insert the number of the drawing without any prefix 0s.\nFor example 00047421 enter as 47421\n\n"
+        mb.showinfo('Help', 
+                    " - Insert the number of the drawing without any prefix 0s, or the part ID.\nFor example 00047421 enter as 47421, or F02964\n\n"
                     " - This will then try to open the .idw file, failing that a .dwg file, then .tif and finally .png\n\n"
-                    " - If a specific drawing is required such as C or R then use the checkboxes\n\n"
+                    " - If a specific drawing is required such as C or R then use the checkboxes located under the File/Drawing Type Menu\n\n"
                     " - The 'Close All' button closes all .idw and .dwg files instantly by the windows task kill process - to help clear up the desktop if lots of drawings have been opened\n\n"
-                    " - The 'Open Folder' checkbox will open the folder that the drawing is located\n\n"
+                    " - The 'Open Folder' checkbox, located under File/Options Menu, will open the folder that the drawing is located\n\n"
+                    " - The 'DCN Check' checkbox, located under File/Options Menu, will check and notify the user for unactioned DCN related ONLY to the drawing being opened\n\n"
                     " - Customer enquiry folder opens via the open button after the exact 9 digit number has been entered\n\n"
                     "Please report any bugs and suggest any ideas to Leon")
 
     def about_menu(self):
-        mb.showinfo('About', "Leon's drawing opener\nVersion: 1.3.2")
+        mb.showinfo('About', "Leon's drawing opener\nVersion: 1.3.3")
 
     def coming_soon(self):
         mb.showinfo('Message','Feature coming soon')
@@ -176,11 +215,12 @@ class MainApplication(tk.Tk):
     def open_drawing(self, drawingNumber):
         while True:
             if not drawingNumber.isdigit():
-                mb.showerror('Error', 'Invalid number entered')
-                break
+                try: 
+                    drawingNumber = self.partid_to_drawing_number(drawingNumber.upper())
+                except:
+                    mb.showerror('Error', 'Invalid number entered')
+                    break
             
-            print(self.dcn_check(drawingNumber))
-            print(self.dcnCheckBool.get())
             if self.dcn_check(drawingNumber) and self.dcnCheckBool.get():
                 mb.showerror('DCN', 'DCN(s) found')
             
@@ -228,13 +268,18 @@ class MainApplication(tk.Tk):
             break
 
     def dcn_check(self, DC_Code):
-        for row in mydb_cursor.execute("select * from DCNTab where DC_CODE like ?", '%'+DC_Code+'%'):
+        for row in DOdb_cursor.execute("select * from DCNTab where DC_CODE like ?", '%'+DC_Code+'%'):
             try:
                 if row.CHANGE_NOTE_NO:
                     return True
             except Exception:
                 self.messageBox.insert(tk.END, f'\nError in checking for DCN')
             return False
+        
+    def partid_to_drawing_number(self, part_id):
+        for row in SMARTVISIONdb_cursor.execute("select * from [Part Master] where PRTNUM_01 like ?", '%'+part_id+'%'):
+            dn = row.DRANUM_01
+        return dn.lstrip('0')
 
 
     def open_enquiry(self, enquiryNumber):
