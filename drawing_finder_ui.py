@@ -145,8 +145,8 @@ class MainApplication(tk.Tk):
         self.messageBox.grid(row=3, column=0, columnspan=10, padx=(5,0), pady=(5,5))
         self.messageBoxScrollBar.grid(row=3, column=11, sticky='ns', padx=(0,5))
 
-        self.expressionFieldDrawing.bind('<FocusIn>', self.return_bind_open_drawing())
-        self.expressionFieldEnquiries.bind('<FocusIn>', self.return_bind_open_enquiry())
+        self.expressionFieldDrawing.bind('<Enter>', lambda event=None: self.return_bind_open_drawing())
+        self.expressionFieldEnquiries.bind('<Enter>', lambda event=None: self.return_bind_open_enquiry())
 
     def return_bind_open_drawing(self):
         self.bind('<Return>', lambda event=None: self.openButtonDrawing.invoke())
@@ -183,7 +183,7 @@ class MainApplication(tk.Tk):
                     "Please report any bugs and suggest any ideas to Leon")
 
     def about_menu(self):
-        mb.showinfo('About', "Leon's drawing opener\nVersion: 1.4.0")
+        mb.showinfo('About', "Leon's drawing opener\nVersion: 1.4.1")
 
     def coming_soon(self):
         mb.showinfo('Message','Feature coming soon')
