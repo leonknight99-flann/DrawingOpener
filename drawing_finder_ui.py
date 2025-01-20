@@ -177,7 +177,7 @@ class MainApplication(tk.Tk):
                     "Please report any bugs and suggest any ideas to Leon")
 
     def about_menu(self):
-        mb.showinfo('About', "Leon's drawing opener\nVersion: 1.4.1")
+        mb.showinfo('About', "Leon's drawing opener\nVersion: 1.4.2")
 
     def coming_soon(self):
         mb.showinfo('Message','Feature coming soon')
@@ -195,11 +195,7 @@ class MainApplication(tk.Tk):
             self.sub_app_vswr.focus()
 
     def filter_file_names(self, fileList, letterType):
-        filteredList = []
-        filteredList = filteredList + list(filter(lambda d: '.idw' in d, fileList))
-        filteredList = filteredList + list(filter(lambda d: '.dwg' in d, fileList))
-        filteredList = filteredList + list(filter(lambda d: '.tif' in d, fileList))
-        filteredList = filteredList + list(filter(lambda d: '.png' in d, fileList))
+        filteredList = list(filter(lambda d: any(f in d for f in ['.idw', '.dwg', '.tif', '.png']), fileList))
         if not filteredList:
             mb.showerror('Error', f'No drawing of letter {letterType} found.')
             return
