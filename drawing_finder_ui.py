@@ -10,12 +10,6 @@ import pyodbc
 drawingPath = '\\\\Filesrv\\Drawings\\PROD\\'
 enquiryPath = '\\\\Filesrv\\CustomerEnquiries\\'
 
-DOdb = pyodbc.connect("DRIVER={SQL Server};SERVER=SQLSRV22;DATABASE=EngAdmin;UID=FLUser;PWD=MelonBall", readonly=True)
-DOdb_cursor = DOdb.cursor()
-
-SMARTVISIONdb = pyodbc.connect("DRIVER={SQL Server};SERVER=SQLSRV22;DATABASE=SVFLANN;UID=SVUpdater;PWD=MelonBall", readonly=True)
-SMARTVISIONdb_cursor = SMARTVISIONdb.cursor()
-
 def resource_path(relative_path):
     base_path = getattr(sys, '_MEIPASS', os.path.dirname(os.path.abspath(__file__)))
     return os.path.join(base_path, relative_path)
@@ -267,18 +261,25 @@ class MainApplication(tk.Tk):
             self.messageBox.insert(tk.END, '\n\n')
             break
 
-    def dcn_check(self, DC_Code):
+    def dcn_check(self, DC_Code):         
+        DOdb = pyodbc.connect("DRIVER={SQL Server};SERVER=SQLSRV22;DATABASE=EngAdmin;UID=FLUser;PWD=MelonBall", readonly=True)
+        DOdb_cursor = DOdb.cursor()
         for row in DOdb_cursor.execute("select * from DCNTab where DC_CODE like ?", '%'+DC_Code+'%'):
             try:
                 if row.CHANGE_NOTE_NO:
+                    DOdb.close()
                     return True
             except Exception:
                 self.messageBox.insert(tk.END, f'\nError in checking for DCN')
+            DOdb.close()
             return False
         
     def partid_to_drawing_number(self, part_id):
+        SMARTVISIONdb = pyodbc.connect("DRIVER={SQL Server};SERVER=SQLSRV22;DATABASE=SVFLANN;UID=SVUpdater;PWD=MelonBall", readonly=True)
+        SMARTVISIONdb_cursor = SMARTVISIONdb.cursor()
         for row in SMARTVISIONdb_cursor.execute("select * from [Part Master] where PRTNUM_01 like ?", '%'+part_id+'%'):
             dn = row.DRANUM_01
+        SMARTVISIONdb.close()
         return dn.lstrip('0')
 
 
