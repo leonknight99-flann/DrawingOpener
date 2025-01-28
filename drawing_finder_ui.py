@@ -9,6 +9,7 @@ import pyodbc
 
 drawingPath = '\\\\Filesrv\\Drawings\\PROD\\'
 enquiryPath = '\\\\Filesrv\\CustomerEnquiries\\'
+inpectionPath = '\\\\Filesrv\\Inspection\\Part I.D\\'
 
 def resource_path(relative_path):
     base_path = getattr(sys, '_MEIPASS', os.path.dirname(os.path.abspath(__file__)))
@@ -120,7 +121,7 @@ class MainApplication(tk.Tk):
         self.expressionFieldInspection = EntryWithPlaceholder(self, width=29, state='disabled', justify='center', placeholder='Inspection part id')
         self.expressionFieldInspection.grid(row=1, column=1, columnspan=7, padx=0, pady=(5,0))
 
-        self.openButtonInspection = tk.Button(self, text='Open', command=lambda: [self.coming_soon()])
+        self.openButtonInspection = tk.Button(self, text='Open', command=lambda: [os.startfile(inpectionPath)])
         self.openButtonInspection.grid(row=1,column=8, padx=(5,0), pady=(5,0))
 
         self.introTextEnquiries = tk.Label(self, text="Enquiry Folder Opener:")
@@ -177,7 +178,7 @@ class MainApplication(tk.Tk):
                     "Please report any bugs and suggest any ideas to Leon")
 
     def about_menu(self):
-        mb.showinfo('About', "Leon's drawing opener\nVersion: 1.4.2")
+        mb.showinfo('About', "Leon's drawing opener\nVersion: 1.4.3")
 
     def coming_soon(self):
         mb.showinfo('Message','Feature coming soon')
