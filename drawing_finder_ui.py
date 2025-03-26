@@ -171,6 +171,7 @@ class MainApplication(tk.Tk):
         self.bind('<Return>', lambda event=None: self.openButtonEnquries.invoke())
 
     def exit_program(self):
+        self.update_parser()
         sys.exit()
 
     def clear_text_entry(self):
