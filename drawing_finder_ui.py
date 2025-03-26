@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import messagebox as mb
 from tkinter import ttk
+from configparser import ConfigParser
 import os
 import sys
 import subprocess
@@ -44,8 +45,14 @@ class EntryWithPlaceholder(tk.Entry):
 
 
 class MainApplication(tk.Tk):
-    def __init__(self, *args, **kwargs):
+
+    def __init__(self, configfile, *args, **kwargs):
         super().__init__(*args, **kwargs) 
+
+        self.parser = ConfigParser()
+        self.configfile = configfile
+        self.parser.read(self.configfile)
+
         self.title("Drawing Opener")
         self.geometry("430x170")
         self.resizable(False, False)
@@ -57,13 +64,13 @@ class MainApplication(tk.Tk):
         
         self.sub_app_waveguide = None
         self.sub_app_vswr = None
-        self.transparencyBool = tk.IntVar()
-        self.openFolderBool = tk.IntVar()
-        self.dcnCheckBool = tk.IntVar(value=True)
+        self.transparencyBool = tk.IntVar(value=(self.parser['GENERAL']['transparency'])==True)
+        self.openFolderBool = tk.IntVar(value=(self.parser['GENERAL']['openFolder'])==True)
+        self.dcnCheckBool = tk.IntVar(value=(self.parser['GENERAL']['dcnCheck'])==True)
 
-        self.openDrawingABool = tk.IntVar(value=True)
-        self.openDrawingCBool = tk.IntVar()
-        self.openDrawingRBool = tk.IntVar()
+        self.openDrawingABool = tk.IntVar(value=(self.parser['GENERAL']['openDrawingA'])=='True')
+        self.openDrawingCBool = tk.IntVar(value=(self.parser['GENERAL']['openDrawingC'])=='True')
+        self.openDrawingRBool = tk.IntVar(value=(self.parser['GENERAL']['openDrawingR'])=='True')
         
         self.menuBar = tk.Menu(self)
         self.config(menu=self.menuBar)
@@ -107,7 +114,7 @@ class MainApplication(tk.Tk):
         self.expressionFieldDrawing.grid(row=0, column=1, columnspan=7, padx=0, pady=(5,0))
 
         self.openButtonDrawing = tk.Button(self, text='Open', command=lambda: [self.open_drawing(self.drawingNumber.get()), 
-                                                                  self.clear_text_entry()])
+                                                                  self.clear_text_entry(), self.update_parser()])
         self.openButtonDrawing.grid(row=0,column=8, padx=(5,0), pady=(5,0))
 
         self.closeButtonDrawing = tk.Button(self, text='Close All', command=lambda: [subprocess.call('taskkill /f /im InventorView.exe', creationflags=subprocess.CREATE_NO_WINDOW), 
@@ -121,7 +128,7 @@ class MainApplication(tk.Tk):
         self.expressionFieldInspection = EntryWithPlaceholder(self, width=29, state='disabled', justify='center', placeholder='Inspection part id')
         self.expressionFieldInspection.grid(row=1, column=1, columnspan=7, padx=0, pady=(5,0))
 
-        self.openButtonInspection = tk.Button(self, text='Open', command=lambda: [os.startfile(inpectionPath)])
+        self.openButtonInspection = tk.Button(self, text='Open', command=lambda: [os.startfile(inpectionPath), self.update_parser()])
         self.openButtonInspection.grid(row=1,column=8, padx=(5,0), pady=(5,0))
 
         self.introTextEnquiries = tk.Label(self, text="Enquiry Folder Opener:")
@@ -131,7 +138,7 @@ class MainApplication(tk.Tk):
         self.expressionFieldEnquiries.grid(row=2, column=1, columnspan=7, padx=0, pady=(5,0))
 
         self.openButtonEnquries = tk.Button(self, text='Open', command=lambda: [self.open_enquiry(self.enquiryNumber.get()), 
-                                                                  self.clear_text_entry()])
+                                                                  self.clear_text_entry(), self.update_parser()])
         self.openButtonEnquries.grid(row=2,column=8, padx=(5,0), pady=(5,0))
 
         self.messageBox = tk.Text(self, height=2, width=50)
@@ -142,6 +149,19 @@ class MainApplication(tk.Tk):
 
         self.expressionFieldDrawing.bind('<Enter>', lambda event=None: self.return_bind_open_drawing())
         self.expressionFieldEnquiries.bind('<Enter>', lambda event=None: self.return_bind_open_enquiry())
+
+    def update_parser(self):
+        config = ConfigParser()
+        config.read(self.configfile)
+        update_config = open(self.configfile, 'w')
+        config['GENERAL']['transparency'] = str(self.transparencyBool.get())
+        config['GENERAL']['openFolder'] = str(self.openFolderBool.get())
+        config['GENERAL']['dcnCheck'] = str(self.dcnCheckBool.get())
+        config['GENERAL']['openDrawingA'] = str(self.openDrawingABool.get())
+        config['GENERAL']['openDrawingC'] = str(self.openDrawingCBool.get())
+        config['GENERAL']['openDrawingR'] = str(self.openDrawingRBool.get())
+        config.write(update_config)
+        update_config.close()
 
     def return_bind_open_drawing(self):
         self.bind('<Return>', lambda event=None: self.openButtonDrawing.invoke())
@@ -178,7 +198,7 @@ class MainApplication(tk.Tk):
                     "Please report any bugs and suggest any ideas to Leon")
 
     def about_menu(self):
-        mb.showinfo('About', "Leon's drawing opener\nVersion: 1.4.3")
+        mb.showinfo('About', "Leon's drawing opener\nVersion: 1.5")
 
     def coming_soon(self):
         mb.showinfo('Message','Feature coming soon')
@@ -259,7 +279,7 @@ class MainApplication(tk.Tk):
             break
 
     def dcn_check(self, DC_Code):         
-        DOdb = pyodbc.connect("DRIVER={SQL Server};SERVER=SQLSRV22;DATABASE=EngAdmin;UID=FLUser;PWD=MelonBall", readonly=True)
+        DOdb = pyodbc.connect("DRIVER={SQL Server};"+f"SERVER={self.parser['ENGDB']['servername']};DATABASE={self.parser['ENGDB']['databasename']};UID={self.parser['ENGDB']['username']};PWD={self.parser['ENGDB']['password']}", readonly=True)
         DOdb_cursor = DOdb.cursor()
         for row in DOdb_cursor.execute("select * from DCNTab where DC_CODE like ?", '%'+DC_Code+'%'):
             try:
@@ -272,11 +292,11 @@ class MainApplication(tk.Tk):
             return False
         
     def partid_to_drawing_number(self, part_id):
-        SMARTVISIONdb = pyodbc.connect("DRIVER={SQL Server};SERVER=SQLSRV22;DATABASE=SVFLANN;UID=SVUpdater;PWD=MelonBall", readonly=True)
-        SMARTVISIONdb_cursor = SMARTVISIONdb.cursor()
-        for row in SMARTVISIONdb_cursor.execute("select * from [Part Master] where PRTNUM_01 like ?", '%'+part_id+'%'):
+        SVdb = pyodbc.connect("DRIVER={SQL Server};"+f"SERVER={self.parser['SVDB']['servername']};DATABASE={self.parser['SVDB']['databasename']};UID={self.parser['SVDB']['username']};PWD={self.parser['SVDB']['password']}", readonly=True)
+        SVdb_cursor = SVdb.cursor()
+        for row in SVdb_cursor.execute("select * from [Part Master] where PRTNUM_01 like ?", '%'+part_id+'%'):
             dn = row.DRANUM_01
-        SMARTVISIONdb.close()
+        SVdb.close()
         return dn.lstrip('0')
 
 
@@ -420,5 +440,5 @@ class UnitCalculatorPage(tk.Toplevel):
             
 
 if __name__ == '__main__':
-    app = MainApplication()
+    app = MainApplication("settings.ini")
     app.mainloop()
