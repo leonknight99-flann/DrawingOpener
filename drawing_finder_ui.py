@@ -52,6 +52,7 @@ class MainApplication(tk.Tk):
         self.parser = ConfigParser()
         self.configfile = configfile
         self.parser.read(self.configfile)
+        print(self.parser.sections())
 
         self.title("Drawing Opener")
         self.geometry("430x170")
@@ -64,13 +65,13 @@ class MainApplication(tk.Tk):
         
         self.sub_app_waveguide = None
         self.sub_app_vswr = None
-        self.transparencyBool = tk.IntVar(value=(self.parser['GENERAL']['transparency'])==True)
-        self.openFolderBool = tk.IntVar(value=(self.parser['GENERAL']['openFolder'])==True)
-        self.dcnCheckBool = tk.IntVar(value=(self.parser['GENERAL']['dcnCheck'])==True)
+        self.transparencyBool = tk.IntVar(value=(self.parser['GENERAL']['transparency'])=='1')
+        self.openFolderBool = tk.IntVar(value=(self.parser['GENERAL']['openFolder'])=='1')
+        self.dcnCheckBool = tk.IntVar(value=(self.parser['GENERAL']['dcnCheck'])=='1')
 
-        self.openDrawingABool = tk.IntVar(value=(self.parser['GENERAL']['openDrawingA'])=='True')
-        self.openDrawingCBool = tk.IntVar(value=(self.parser['GENERAL']['openDrawingC'])=='True')
-        self.openDrawingRBool = tk.IntVar(value=(self.parser['GENERAL']['openDrawingR'])=='True')
+        self.openDrawingABool = tk.IntVar(value=(self.parser['GENERAL']['openDrawingA'])=='1')
+        self.openDrawingCBool = tk.IntVar(value=(self.parser['GENERAL']['openDrawingC'])=='1')
+        self.openDrawingRBool = tk.IntVar(value=(self.parser['GENERAL']['openDrawingR'])=='1')
         
         self.menuBar = tk.Menu(self)
         self.config(menu=self.menuBar)
@@ -440,5 +441,6 @@ class UnitCalculatorPage(tk.Toplevel):
             
 
 if __name__ == '__main__':
-    app = MainApplication("settings.ini")
+    app = MainApplication(os.path.abspath(os.path.join(os.path.dirname(__file__), ".\\settings.ini")))
+    app.after(1, app.transparency_menu())
     app.mainloop()
