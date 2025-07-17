@@ -5,7 +5,7 @@ a = Analysis(
     ['drawing_finder_ui.py'],
     pathex=[],
     binaries=[],
-    datas=[('FlannMicrowave.ico', '.'), ('settings.ini', '.')],
+    datas=[('FlannMicrowave.ico', '.'), ('settings.ini', '.'), ('RectangularWaveguideData.csv','.')],
     hiddenimports=[],
     hookspath=[],
     hooksconfig={},

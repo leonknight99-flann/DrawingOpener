@@ -201,7 +201,7 @@ class MainApplication(tk.Tk):
                     "Please report any bugs and suggest any ideas to Leon")
 
     def about_menu(self):
-        mb.showinfo('About', "Leon's drawing opener\nVersion: 1.6")
+        mb.showinfo('About', "Leon's drawing opener\nVersion: 1.6.1")
 
     def coming_soon(self):
         mb.showinfo('Message','Feature coming soon')
@@ -330,7 +330,7 @@ class WaveguideCalculatorPage(tk.Toplevel):
 
         self.iconbitmap(resource_path('FlannMicrowave.ico'))
 
-        with open('RectangularWaveguideData.csv', 'r') as file:
+        with open(resource_path('RectangularWaveguideData.csv'), 'r') as file:
             reader = csv.reader(file)
             self.waveguide_data = list(reader)
             self.waveguide_data.pop(0)  # Remove header row
