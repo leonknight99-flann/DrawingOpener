@@ -201,7 +201,7 @@ class MainApplication(tk.Tk):
                     "Please report any bugs and suggest any ideas to Leon")
 
     def about_menu(self):
-        mb.showinfo('About', "Leon's drawing opener\nVersion: 1.5")
+        mb.showinfo('About', "Leon's drawing opener\nVersion: 1.6")
 
     def coming_soon(self):
         mb.showinfo('Message','Feature coming soon')

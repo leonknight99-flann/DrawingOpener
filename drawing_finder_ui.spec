@@ -21,7 +21,7 @@ exe = EXE(
     a.scripts,
     [],
     exclude_binaries=True,
-    name='Drawing Opener 1.5.0',
+    name='Drawing Opener 1.6.0',
     debug=False,
     bootloader_ignore_signals=False,
     strip=False,
