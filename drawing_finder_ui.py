@@ -7,6 +7,7 @@ import sys
 import subprocess
 import math
 import pyodbc
+import csv
 
 drawingPath = '\\\\Filesrv\\Drawings\\PROD\\'
 enquiryPath = '\\\\Filesrv\\CustomerEnquiries\\'
@@ -322,15 +323,31 @@ class WaveguideCalculatorPage(tk.Toplevel):
         self.main_app = main_app
         super().__init__(main_app)
         self.title("Waveguide Calculator")
-        self.geometry("450x120")
-        self.resizable(False, False)
+        self.geometry("690x1000")
+        # self.resizable(False, False)
 
         self.attributes("-topmost",True)
 
         self.iconbitmap(resource_path('FlannMicrowave.ico'))
+
+        with open('RectangularWaveguideData.csv', 'r') as file:
+            reader = csv.reader(file)
+            self.waveguide_data = list(reader)
+            self.waveguide_data.pop(0)  # Remove header row
+
+        cols = ('WG','WR','R','RG','WM','A (mm)','B (mm)','A (")','B (")','LF (GHz)','HF (GHz)')
+        self.waveguide_table = ttk.Treeview(self, columns=cols, show='headings', height=48)
+
+        for wg in self.waveguide_data:
+            self.waveguide_table.insert('', 'end', values=wg)
+
+        for col in cols:
+            self.waveguide_table.heading(col, text=col)
+            self.waveguide_table.column(col, anchor='center', width=60)
         
-        self.label = tk.Label(self, text="Coming Soon!")
-        self.label.grid(row=0, column=0)
+        self.waveguide_table.grid(row=0, column=0, padx=(5,0), pady=(5,5))
+        # self.label = tk.Label(self, text="Coming Soon!")
+        # self.label.grid(row=0, column=0)
       
 
 class UnitCalculatorPage(tk.Toplevel):
